@@ -15,4 +15,11 @@ CHIP Bit {
 
     PARTS:
     // Put your code here:
+
+    // o1 is the previous output
+    Mux(a=o1, b=in, sel=load, out=mux);
+    DFF(in=mux, out=o1);
+
+    // to set o1 to out
+    Or(a=o1, b=false, out=out);
 }
