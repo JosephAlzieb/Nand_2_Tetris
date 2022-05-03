@@ -21,4 +21,22 @@ public class SymbolTable {
     symbolTable.put("KBD", 24576);
 
   }
+
+  public void addSymbolToAddress(String symbol, int sympoleAddress) {
+    symbolTable.put(symbol, sympoleAddress);
+
+  }
+
+  public void addSymbol(String symbol) {
+    symbolTable.put(symbol, nextFreeAddress);
+    nextFreeAddress++;
+  }
+
+  public boolean contains(String symbol) {
+    return (symbolTable.containsKey(symbol));
+  }
+
+  public int getAddress(String symbol) {
+    return (symbolTable.get(symbol));
+  }
 }
