@@ -98,4 +98,15 @@ public class Parser {
     }
     return comp;
   }
+
+  public String jump() {
+    String jump;
+    if (currentCommand.contains(";")) {
+      int semiIndex = currentCommand.indexOf(";");
+      jump = currentCommand.substring(semiIndex + 1);
+    } else {
+      jump = null;
+    }
+    return jump;
+  }
 }
