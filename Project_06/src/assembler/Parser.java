@@ -11,6 +11,7 @@ public class Parser {
 
   private final ArrayList<String> instructions = new ArrayList<>();
   private int currentCommandIndex = 0;
+  String currentCommand;
 
 
   public Parser(String fileName) {
@@ -52,20 +53,31 @@ public class Parser {
   }
 
   public String getNextCommand() {
-    String currentCommand = instructions.get(currentCommandIndex);
+    currentCommand = instructions.get(currentCommandIndex);
     currentCommandIndex ++;
     return currentCommand;
   }
 
-  public InstructionsType commandType(String command) {
-    if (command.charAt(0) == '@') {
+  public InstructionsType commandType() {
+    if (currentCommand.charAt(0) == '@') {
       return A_INSTRUCTION;
-    } else if (command.charAt(0) == '(') {
+    } else if (currentCommand.charAt(0) == '(') {
       return LABEL;
     } else {
       return C_INSTRUCTION;
     }
   }
 
+  // des = comp ; jump
+  public String dest() {
+    String dest;
+    if (currentCommand.contains("=")) {
+      int nIndex = currentCommand.indexOf("=");
+      dest = currentCommand.substring(0, nIndex);
+    } else {
+      dest = null;
+    }
+    return dest;
+  }
 
 }
