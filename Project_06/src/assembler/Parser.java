@@ -49,4 +49,10 @@ public class Parser {
     return (currentCommandIndex +1 < instructions.size()) || (currentCommandIndex == 0 && instructions.size() >= 1);
   }
 
+  public String getNextCommand() {
+    String currentCommand = instructions.get(currentCommandIndex);
+    currentCommandIndex ++;
+    return currentCommand;
+  }
+
 }
