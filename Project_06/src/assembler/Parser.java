@@ -8,6 +8,8 @@ import java.util.ArrayList;
 public class Parser {
 
   private final ArrayList<String> instructions = new ArrayList<>();
+  private int currentCommandIndex = 0;
+
 
   public Parser(String fileName) {
     try(FileReader fileReader = new FileReader(fileName)) {
@@ -42,4 +44,9 @@ public class Parser {
     }
     return strWhiteSpace;
   }
+
+  public boolean hasMoreCommands() {
+    return (currentCommandIndex +1 < instructions.size()) || (currentCommandIndex == 0 && instructions.size() >= 1);
+  }
+
 }
