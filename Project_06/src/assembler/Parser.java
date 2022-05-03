@@ -80,4 +80,22 @@ public class Parser {
     return dest;
   }
 
+  public String comp() {
+    String comp;
+
+    if (currentCommand.contains("=") && currentCommand.contains(";")) {
+      int equalsIndex = currentCommand.indexOf("=");
+      int semiIndex = currentCommand.indexOf(";");
+      comp = currentCommand.substring(equalsIndex + 1, semiIndex);
+    } else if (currentCommand.contains("=")) {
+      int equalsIndex = currentCommand.indexOf("=");
+      comp = currentCommand.substring(equalsIndex + 1);
+    } else if (currentCommand.contains(";")) {
+      int semiIndex = currentCommand.indexOf(";");
+      comp = currentCommand.substring(0, semiIndex);
+    } else {
+      return null;
+    }
+    return comp;
+  }
 }
