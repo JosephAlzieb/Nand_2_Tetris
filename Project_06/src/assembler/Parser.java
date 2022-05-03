@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Parser {
 
-  private ArrayList<String> instructions = new ArrayList<>();
+  private final ArrayList<String> instructions = new ArrayList<>();
 
   public Parser(String fileName) {
     try(FileReader fileReader = new FileReader(fileName)) {
