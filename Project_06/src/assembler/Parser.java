@@ -15,6 +15,10 @@ public class Parser {
       BufferedReader reader = new BufferedReader(fileReader);
       String strLine;
       while ((strLine = reader.readLine()) != null) {
+        String command = removeCommentsAndSpaces(strLine);
+        if (!command.equals("")) {
+          instructions.add(command);
+        }
       }
       fileReader.close();
       reader.close();
@@ -23,4 +27,19 @@ public class Parser {
     }
   }
 
+  private String removeCommentsAndSpaces(String strLine) {
+    String strWhiteSpace = strLine;
+
+    // remove comments
+    if (strWhiteSpace.contains("//")) {
+      int nOffSet = strWhiteSpace.indexOf("//");
+      strWhiteSpace = strWhiteSpace.substring(0, nOffSet).trim();
+    }
+
+    // remove spaces and go to new line, skip over empty line
+    if (!strWhiteSpace.equals("")) {
+      strWhiteSpace = strWhiteSpace.trim().replaceAll("\\s", "");
+    }
+    return strWhiteSpace;
+  }
 }
