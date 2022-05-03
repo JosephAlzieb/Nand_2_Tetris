@@ -32,6 +32,10 @@ public class Parser {
     }
   }
 
+  public int getCurrentCommandIndex() {
+    return currentCommandIndex;
+  }
+
   private String removeCommentsAndSpaces(String strLine) {
     String strWhiteSpace = strLine;
 
@@ -66,6 +70,18 @@ public class Parser {
     } else {
       return C_INSTRUCTION;
     }
+  }
+
+  public String symbol() {
+    return currentCommand.substring(1);
+  }
+
+  public void removeInstruction(int index) {
+    instructions.remove(index);
+  }
+
+  public void reset() {
+    currentCommandIndex = 0;
   }
 
   // des = comp ; jump
