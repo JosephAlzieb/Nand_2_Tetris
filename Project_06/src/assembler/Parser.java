@@ -1,5 +1,7 @@
 package assembler;
 
+import static assembler.InstructionsType.*;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -54,5 +56,16 @@ public class Parser {
     currentCommandIndex ++;
     return currentCommand;
   }
+
+  public InstructionsType commandType(String command) {
+    if (command.charAt(0) == '@') {
+      return A_INSTRUCTION;
+    } else if (command.charAt(0) == '(') {
+      return LABEL;
+    } else {
+      return C_INSTRUCTION;
+    }
+  }
+
 
 }
