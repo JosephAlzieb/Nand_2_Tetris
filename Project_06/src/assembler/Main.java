@@ -10,8 +10,13 @@ import java.io.IOException;
 public class Main {
 
   public static void main(String[] args) {
+    String fileName = "C:\\Users\\Joseph\\Documents\\Von NAND zu Tetris 2022\\nand2tetris\\nand2tetris\\projects\\06\\max\\Max.asm";
+//    if (args.length == 0) {
+//      return;
+//    } else {
+//      fileName = args[args.length - 1];
+//    }
 
-    String fileName = "this come from args ... later";
     Parser parser = new Parser(fileName);
 
     SymbolTable symbolTable = new SymbolTable();
@@ -29,11 +34,16 @@ public class Main {
     parser.reset();
 
     System.out.println("=============================");
+    System.out.println("SymbolTable");
+    symbolTable.printTable();
+    System.out.println("=============================");
+
+    System.out.println("=============================");
     System.out.println("translation from Asm to Bin");
     System.out.println("=============================");
     // example: Add.asm ==> Add
     String fileNameSplit = fileName.substring(0, fileName.length() - 4);
-    try (FileWriter fileWriter = new FileWriter(fileNameSplit + ".hack")) {
+    try (FileWriter fileWriter = new FileWriter("max.hack")) {
       while (parser.hasMoreCommands()) {
         String currentCommand = parser.getNextCommand();
         StringBuilder commands = new StringBuilder();
@@ -42,7 +52,6 @@ public class Main {
         if (parser.commandType().equals(A_INSTRUCTION)
             && ((Character.isLetter(symbol.charAt(0)))
             && symbolTable.contains(symbol))) {
-
           int address = symbolTable.getAddress(symbol);
           binary = Integer.toBinaryString(address);
           commands.append(binary);
@@ -56,6 +65,10 @@ public class Main {
           commands.append(binary);
         } else if (parser.commandType().equals(A_INSTRUCTION)) {
           binary = Integer.toBinaryString(Integer.parseInt(symbol));
+          commands.append(binary);
+        } else if (parser.commandType().equals(LABEL)){
+          int address = symbolTable.contains(symbol) ? symbolTable.getAddress(symbol):4444;
+          binary = Integer.toBinaryString(address);
           commands.append(binary);
         } else if (parser.commandType().equals(C_INSTRUCTION)) {
           String strComp = parser.comp();
