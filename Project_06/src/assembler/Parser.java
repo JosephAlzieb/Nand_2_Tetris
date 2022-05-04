@@ -23,6 +23,7 @@ public class Parser {
         String command = removeCommentsAndSpaces(strLine);
         if (!command.equals("")) {
           instructions.add(command);
+          System.out.println(command);
         }
       }
       fileReader.close();
@@ -53,7 +54,7 @@ public class Parser {
   }
 
   public boolean hasMoreCommands() {
-    return (currentCommandIndex +1 < instructions.size()) || (currentCommandIndex == 0 && instructions.size() >= 1);
+    return currentCommandIndex < instructions.size();
   }
 
   public String getNextCommand() {

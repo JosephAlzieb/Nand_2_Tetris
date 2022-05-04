@@ -28,6 +28,9 @@ public class Main {
 
     parser.reset();
 
+    System.out.println("=============================");
+    System.out.println("translation from Asm to Bin");
+    System.out.println("=============================");
     // example: Add.asm ==> Add
     String fileNameSplit = fileName.substring(0, fileName.length() - 4);
     try (FileWriter fileWriter = new FileWriter(fileNameSplit + ".hack")) {
@@ -35,32 +38,37 @@ public class Main {
         String currentCommand = parser.getNextCommand();
         StringBuilder commands = new StringBuilder();
         String binary;
+        String symbol = parser.symbol();
         if (parser.commandType().equals(A_INSTRUCTION)
             && ((Character.isLetter(parser.symbol().charAt(0)))
             && symbolTable.contains(parser.symbol()))) {
 
-          int address = symbolTable.getAddress(parser.symbol());
+          int address = symbolTable.getAddress(symbol);
           binary = Integer.toBinaryString(address);
           commands.append(binary);
         } else if (parser.commandType().equals(A_INSTRUCTION)
-            && Character.isLetter(parser.symbol().charAt(0))
-            && !symbolTable.contains(parser.symbol())) {
+            && Character.isLetter(symbol.charAt(0))
+            && !symbolTable.contains(symbol)) {
 
-          symbolTable.addSymbol(parser.symbol());
-          int address = symbolTable.getAddress(parser.symbol());
+          symbolTable.addSymbol(symbol);
+          int address = symbolTable.getAddress(symbol);
           binary = Integer.toBinaryString(address);
+          commands.append(binary);
+        } else if (parser.commandType().equals(A_INSTRUCTION)) {
+          binary = Integer.toBinaryString(Integer.parseInt(symbol));
           commands.append(binary);
         } else if (parser.commandType().equals(C_INSTRUCTION)) {
           String strComp = parser.comp();
           String strDest = parser.dest();
           String strJump = parser.jump();
           commands.append("111");
-//          sbCommand.append(Code.comp(strComp));
-//          sbCommand.append(Code.dest(strDest));
-//          sbCommand.append(Code.jump(strJump));
+          commands.append(Code.comp(strComp));
+          commands.append(Code.dest(strDest));
+          commands.append(Code.jump(strJump));
         } else {
-          commands.append("error");
+          commands.append("Error");
         }
+        System.out.println(commands);
         fileWriter.write(commands + "\n");
       }
     } catch (IOException e) {

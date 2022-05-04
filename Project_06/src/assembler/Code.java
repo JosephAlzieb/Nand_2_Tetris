@@ -4,7 +4,7 @@ public class Code {
 
   public static String dest(String strDest) {
     return switch (strDest) {
-      case "null" -> "000";
+      case null -> "000";
       case "M" -> "001";
       case "D" -> "010";
       case "MD", "DM" -> "011";
@@ -54,7 +54,7 @@ public class Code {
   public static String jump(String strJump) {
 
     return switch (strJump) {
-      case "null" -> "000";
+      case null -> "000";
       case "JGT" -> "001";
       case "JEQ" -> "010";
       case "JGE" -> "011";
