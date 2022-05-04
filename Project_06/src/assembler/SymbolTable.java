@@ -39,4 +39,8 @@ public class SymbolTable {
   public int getAddress(String symbol) {
     return (symbolTable.get(symbol));
   }
+
+  public void printTable (){
+    symbolTable.forEach((s,a) -> System.out.println("symbol: " + s +" , Address: "+ a));
+  }
 }
