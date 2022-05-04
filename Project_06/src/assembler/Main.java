@@ -40,8 +40,8 @@ public class Main {
         String binary;
         String symbol = parser.symbol();
         if (parser.commandType().equals(A_INSTRUCTION)
-            && ((Character.isLetter(parser.symbol().charAt(0)))
-            && symbolTable.contains(parser.symbol()))) {
+            && ((Character.isLetter(symbol.charAt(0)))
+            && symbolTable.contains(symbol))) {
 
           int address = symbolTable.getAddress(symbol);
           binary = Integer.toBinaryString(address);
