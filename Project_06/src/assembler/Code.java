@@ -16,9 +16,9 @@ public class Code {
     };
   }
 
-  public static String comp(String strMnemonic) {
+  public static String comp(String strComp) {
 
-    return switch (strMnemonic) {
+    return switch (strComp) {
       case "0" -> "0101010";
       case "1" -> "0111111";
       case "-1" -> "0111010";
@@ -48,6 +48,21 @@ public class Code {
       case "D&M", "M&D" -> "1000000";
       case "D|M", "M|D" -> "1010101";
       default -> "Invalid Competition";
+    };
+  }
+
+  public static String jump(String strJump) {
+
+    return switch (strJump) {
+      case "null" -> "000";
+      case "JGT" -> "001";
+      case "JEQ" -> "010";
+      case "JGE" -> "011";
+      case "JLT" -> "100";
+      case "JNE" -> "101";
+      case "JLE" -> "110";
+      case "JMP" -> "111";
+      default -> "Invalid Jump";
     };
   }
 
