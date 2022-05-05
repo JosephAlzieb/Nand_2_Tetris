@@ -126,4 +126,8 @@ public class Parser {
     }
     return jump;
   }
+
+  public void printAsmProgramm (){
+    instructions.forEach(System.out::println);
+  }
 }
