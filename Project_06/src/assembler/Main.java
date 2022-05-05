@@ -23,6 +23,18 @@ public class Main {
 
     scannLabels(parser, symbolTable);
 
+    printSteps(parser, symbolTable);
+
+    translateAsmToBin(parser, symbolTable);
+
+  }
+
+  private static void printSteps(Parser parser, SymbolTable symbolTable) {
+    System.out.println("=============================");
+    System.out.println("Asm-code after removing Labels");
+    parser.printAsmProgramm();
+    System.out.println("=============================");
+
     parser.reset();
 
     System.out.println("=============================");
@@ -35,7 +47,6 @@ public class Main {
     System.out.println("=============================");
     // example: Add.asm ==> Add
     // String fileNameSplit = fileName.substring(0, fileName.length() - 4);
-    translateAsmToBin(parser, symbolTable);
   }
 
 
@@ -49,9 +60,11 @@ public class Main {
         if (parser.commandType().equals(A_INSTRUCTION)
             && ((Character.isLetter(symbol.charAt(0)))
             && symbolTable.contains(symbol))) {
+
           int address = symbolTable.getAddress(symbol);
           binary = Integer.toBinaryString(address);
           command.append(binary);
+
         } else if (parser.commandType().equals(A_INSTRUCTION)
             && Character.isLetter(symbol.charAt(0))
             && !symbolTable.contains(symbol)) {
@@ -60,13 +73,12 @@ public class Main {
           int address = symbolTable.getAddress(symbol);
           binary = Integer.toBinaryString(address);
           command.append(binary);
+
         } else if (parser.commandType().equals(A_INSTRUCTION)) {
+
           binary = Integer.toBinaryString(Integer.parseInt(symbol));
           command.append(binary);
-        } else if (parser.commandType().equals(LABEL)){
-          int address = symbolTable.contains(symbol) ? symbolTable.getAddress(symbol):404;
-          binary = Integer.toBinaryString(address);
-          command.append(binary);
+
         } else if (parser.commandType().equals(C_INSTRUCTION)) {
           String strComp = parser.comp();
           String strDest = parser.dest();
