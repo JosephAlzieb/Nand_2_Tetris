@@ -23,6 +23,8 @@ public class Main {
 
     scannLabels(parser, symbolTable);
 
+    parser.reset();
+
     printSteps(parser, symbolTable);
 
     translateAsmToBin(parser, symbolTable);
@@ -34,8 +36,6 @@ public class Main {
     System.out.println("Asm-code after removing Labels");
     parser.printAsmProgramm();
     System.out.println("=============================");
-
-    parser.reset();
 
     System.out.println("=============================");
     System.out.println("SymbolTable");
@@ -111,8 +111,9 @@ public class Main {
       if (parser.commandType().equals(LABEL)) {
         int length = currentCommand.length();
         int line = parser.getCurrentCommandIndex();
-        symbolTable.addSymbolToAddress(parser.symbol().substring(1, length - 1), line);
-        parser.removeInstruction(line);
+        String symbol = parser.symbol();
+        symbolTable.addSymbolToAddress(symbol.substring(0,symbol.length()-1), line-1);
+        parser.removeInstruction(line-1);
       }
     }
   }
