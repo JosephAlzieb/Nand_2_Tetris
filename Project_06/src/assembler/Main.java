@@ -45,12 +45,12 @@ public class Main {
     System.out.println("=============================");
     System.out.println("translation from Asm to Bin");
     System.out.println("=============================");
-    // example: Add.asm ==> Add
-    // String fileNameSplit = fileName.substring(0, fileName.length() - 4);
   }
 
 
   private static void translateAsmToBin(Parser parser, SymbolTable symbolTable) {
+    // example: Add.asm ==> Add
+    // String fileNameSplit = fileName.substring(0, fileName.length() - 4);
     try (FileWriter fileWriter = new FileWriter("result.hack")) {
       while (parser.hasMoreCommands()) {
         parser.getNextCommand(); // return the current command, and goes one further.
