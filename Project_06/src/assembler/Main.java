@@ -21,15 +21,7 @@ public class Main {
 
     SymbolTable symbolTable = new SymbolTable();
 
-    while (parser.hasMoreCommands()) {
-      String currentCommand = parser.getNextCommand();
-      if (parser.commandType().equals(LABEL)) {
-        int length = currentCommand.length();
-        int line = parser.getCurrentCommandIndex();
-        symbolTable.addSymbolToAddress(parser.symbol().substring(1, length - 1), line);
-        parser.removeInstruction(line);
-      }
-    }
+    scannLabels(parser, symbolTable);
 
     parser.reset();
 
@@ -43,6 +35,11 @@ public class Main {
     System.out.println("=============================");
     // example: Add.asm ==> Add
     // String fileNameSplit = fileName.substring(0, fileName.length() - 4);
+    translateAsmToBin(parser, symbolTable);
+  }
+
+
+  private static void translateAsmToBin(Parser parser, SymbolTable symbolTable) {
     try (FileWriter fileWriter = new FileWriter("result.hack")) {
       while (parser.hasMoreCommands()) {
         parser.getNextCommand(); // return the current command, and goes one further.
@@ -67,7 +64,7 @@ public class Main {
           binary = Integer.toBinaryString(Integer.parseInt(symbol));
           command.append(binary);
         } else if (parser.commandType().equals(LABEL)){
-          int address = symbolTable.contains(symbol) ? symbolTable.getAddress(symbol):4444;
+          int address = symbolTable.contains(symbol) ? symbolTable.getAddress(symbol):404;
           binary = Integer.toBinaryString(address);
           command.append(binary);
         } else if (parser.commandType().equals(C_INSTRUCTION)) {
@@ -82,13 +79,29 @@ public class Main {
           command.append("Error");
         }
         if (command.length() < 15){
-          command = new StringBuilder("0".repeat(Math.max(0, 16 - command.length())) + command);
+          command = fillWithZeros(command);
         }
         System.out.println(command);
         fileWriter.write(command + "\n");
       }
     } catch (IOException e) {
       e.printStackTrace();
+    }
+  }
+
+  private static StringBuilder fillWithZeros(StringBuilder command) {
+    return new StringBuilder("0".repeat(Math.max(0, 16 - command.length())) + command);
+  }
+
+  private static void scannLabels(Parser parser, SymbolTable symbolTable) {
+    while (parser.hasMoreCommands()) {
+      String currentCommand = parser.getNextCommand();
+      if (parser.commandType().equals(LABEL)) {
+        int length = currentCommand.length();
+        int line = parser.getCurrentCommandIndex();
+        symbolTable.addSymbolToAddress(parser.symbol().substring(1, length - 1), line);
+        parser.removeInstruction(line);
+      }
     }
   }
 }
