@@ -17,5 +17,8 @@ public class Parser {
     }
   }
 
+  public boolean hasMoreCommands() {
+    return scanner.hasNextLine();
+  }
 
 }
