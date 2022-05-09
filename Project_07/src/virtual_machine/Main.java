@@ -18,7 +18,20 @@ public class Main {
     } else // fileName is a directory - access all files in the directory
     {
       // get Files with .vm
+      files = getVMFiles(fileIn);
     }
     fileOut = new File( "result.asm");
+  }
+
+  public static ArrayList<File> getVMFiles(File directory) {
+    File[] files = directory.listFiles();
+    ArrayList<File> allFiles = new ArrayList<>();
+    if (files != null) {
+      for (File file : files) {
+        if (file.getName().endsWith(".vm")) allFiles.add(file);
+      }
+    }
+    return allFiles;
+
   }
 }
