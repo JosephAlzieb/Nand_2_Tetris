@@ -109,7 +109,6 @@ public class Main {
     while (parser.hasMoreCommands()) {
       String currentCommand = parser.getNextCommand();
       if (parser.commandType().equals(LABEL)) {
-        int length = currentCommand.length();
         int line = parser.getCurrentCommandIndex();
         String symbol = parser.symbol();
         symbolTable.addSymbolToAddress(symbol.substring(0,symbol.length()-1), line-1);
