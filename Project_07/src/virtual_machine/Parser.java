@@ -21,4 +21,16 @@ public class Parser {
     return scanner.hasNextLine();
   }
 
+  private boolean hasComments(String line) {
+    return line.contains("//");
+  }
+
+  private String removeComments(String line) {
+    String newLine = line;
+    if (hasComments(line)) {
+      int offSet = line.indexOf("//");
+      newLine = line.substring(0, offSet).trim();
+    }
+    return newLine;
+  }
 }
