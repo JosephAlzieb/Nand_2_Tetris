@@ -15,12 +15,19 @@ public class Main {
       throw new IllegalArgumentException("Not the correct file type. Please enter a .vm file or a directory containing .vm files. ");
     else if (fileIn.isFile() && args[0].endsWith(".vm")) {
       files.add(fileIn);
-    } else // fileName is a directory - access all files in the directory
+    } else
     {
-      // get Files with .vm
+      // get Files with .vm in the directory
       files = getVMFiles(fileIn);
     }
     fileOut = new File( "result.asm");
+
+    ArrayList<Parser> parsers = new ArrayList<>();
+
+    for (File file : files) {
+      Parser parser = new Parser(file);
+      parsers.add(parser);
+    }
   }
 
   public static ArrayList<File> getVMFiles(File directory) {
