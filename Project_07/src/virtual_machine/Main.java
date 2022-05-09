@@ -10,9 +10,9 @@ public class Main {
     File fileOut;
     ArrayList<File> files = new ArrayList<>();
     if (args.length != 1)
-      throw new IllegalArgumentException("Inaccurate usage. Please enter in the following format: java VMTranslator (directory/filename)");
+      throw new IllegalArgumentException("there is no files to translate");
     else if (fileIn.isFile() && !(args[0].endsWith(".vm")))
-      throw new IllegalArgumentException("Not the correct file type. Please enter a .vm file or a directory containing .vm files. ");
+      throw new IllegalArgumentException("incorrect file type.");
     else if (fileIn.isFile() && args[0].endsWith(".vm")) {
       files.add(fileIn);
     } else
