@@ -1,8 +1,11 @@
 package virtual_machine;
 
 import static virtual_machine.CommandType.C_ARITHMETIC;
+import static virtual_machine.CommandType.C_CALL;
+import static virtual_machine.CommandType.C_FUNCTION;
 import static virtual_machine.CommandType.C_POP;
 import static virtual_machine.CommandType.C_PUSH;
+import static virtual_machine.CommandType.C_RETURN;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -76,4 +79,23 @@ public class Parser {
     }
     return null;
   }
+
+  public String arg1() {
+    if (getCommandType().equals(C_ARITHMETIC)) {
+      return arg0;
+    } else if (!(getCommandType().equals(C_RETURN))) {
+      return arg1;
+    }
+    return null;
+  }
+
+  public Integer arg2() {
+    CommandType type = getCommandType();
+    if (type.equals(C_PUSH) || type.equals(C_POP) || type.equals(C_FUNCTION) || type.equals(C_CALL)) {
+      return Integer.parseInt(arg2);
+    }
+    return null;
+
+  }
+
 }
