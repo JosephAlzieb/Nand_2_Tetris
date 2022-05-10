@@ -64,4 +64,16 @@ public class Parser {
       arg2 = commands[2];
     }
   }
+
+
+  public CommandType getCommandType(){
+    if (arg0.equals("push")) {
+      return C_PUSH;
+    } else if (arg0.equals("pop")) {
+      return C_POP;
+    } else if (arithCommands.contains(arg0)) {
+      return C_ARITHMETIC;
+    }
+    return null;
+  }
 }
