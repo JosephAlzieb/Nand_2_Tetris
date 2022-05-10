@@ -41,4 +41,16 @@ public class Main {
     return allFiles;
 
   }
+
+  public static ArrayList<File> getVMFiles(File directory) {
+    File[] files = directory.listFiles();
+    ArrayList<File> allFiles = new ArrayList<>();
+    if (files != null) {
+      for (File file : files) {
+        if (file.getName().endsWith(".vm")) allFiles.add(file);
+      }
+    }
+    return allFiles;
+
+  }
 }
