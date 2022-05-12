@@ -65,6 +65,9 @@ public class CodeWriter {
     if (commandType.equals(C_PUSH)) {
       code = translatePushCommand(arg1, arg2);
     }
+    else if(commandType.equals(C_POP)){
+      code = translatePopCommand(arg1, arg2);
+    }
 
     try {
         System.out.println(code);
@@ -74,6 +77,32 @@ public class CodeWriter {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  private String translatePopCommand(String arg1, Integer arg2) {
+    String code = null;
+    if (arg1.equals("static")) {
+      code = getPopFormat2(String.valueOf(arg2 + 16));
+    }else if (arg1.equals("this")) {
+      code = getPopFormat1("THIS", arg2);
+    }else if (arg1.equals("local")) {
+      code = getPopFormat1("LCL", arg2);
+
+    } else if (arg1.equals("argument")) {
+      code = getPopFormat1("ARG", arg2);
+    } else if (arg1.equals("that")) {
+      code = getPopFormat1("THAT", arg2);
+      // no constant for pop
+    }else if (arg1.equals("constant")) {
+      code = getConstantFormat(arg2);
+    }else if (arg1.equals("pointer") && arg2 == 0) {
+      code = getPopFormat2("THIS");
+    } else if (arg1.equals("pointer") && arg2 == 1) {
+      code = getPopFormat2("THAT");
+    } else if (arg1.equals("temp")) {
+      code = getPopFormat1("R5", arg2 + 5);
+    }
+    return code;
   }
 
   private String translatePushCommand(String arg1, Integer arg2) {
@@ -145,6 +174,20 @@ public class CodeWriter {
         + "M=M+1\n";
   }
 
+  private String getPopFormat1(String arg1, Integer arg2) {
+    return "@" + arg1
+        + "\nD=M"
+        +"\n@" + arg2
+        +"\nD=D+A\n"
+        + "@R13\n"
+        + "M=D\n"
+        + "@SP\n"
+        + "AM=M-1\n"
+        + "D=M\n"
+        + "@R13\n"
+        + "A=M\n"
+        + "M=D\n";
+  }
 
   private String getPushFormat2(String index) {
     return "@" + index
@@ -156,5 +199,17 @@ public class CodeWriter {
         + "M=M+1\n";
   }
 
+  private String getPopFormat2(String index) {
+    return "@" + index
+        + "\nD=A\n"
+        + "@R13\n"
+        + "M=D\n"
+        + "@SP\n"
+        + "AM=M-1\n"
+        + "D=M\n"
+        + "@R13\n"
+        + "A=M\n"
+        + "M=D\n";
+  }
 
 }
