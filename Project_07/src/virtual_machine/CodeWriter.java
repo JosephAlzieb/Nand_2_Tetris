@@ -212,4 +212,12 @@ public class CodeWriter {
         + "M=D\n";
   }
 
+  public void close() {
+    try {
+      fw.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+  }
 }
