@@ -57,7 +57,9 @@ public class Parser {
         nextLine = scanner.nextLine();
       }
     }
+    System.out.println("=============================");
     currentCommand = nextLine;
+    System.out.println(currentCommand);
     String[] commands = currentCommand.split(" ");
     arg0 = commands[0];
     if (commands.length > 1) {
