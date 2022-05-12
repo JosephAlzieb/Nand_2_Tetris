@@ -92,9 +92,6 @@ public class CodeWriter {
       code = getPopFormat1("ARG", arg2);
     } else if (arg1.equals("that")) {
       code = getPopFormat1("THAT", arg2);
-      // no constant for pop
-    }else if (arg1.equals("constant")) {
-      code = getConstantFormat(arg2);
     }else if (arg1.equals("pointer") && arg2 == 0) {
       code = getPopFormat2("THIS");
     } else if (arg1.equals("pointer") && arg2 == 1) {
