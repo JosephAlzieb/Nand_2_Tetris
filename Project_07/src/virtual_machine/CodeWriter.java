@@ -61,6 +61,20 @@ public class CodeWriter {
   }
 
   public void writePushPop(CommandType commandType, String arg1, Integer arg2) {
+    String code = null;
+    if (commandType.equals(C_PUSH)) {
+      code = translatePushCommand(arg1, arg2);
+    }
+
+    try {
+        System.out.println(code);
+      if (code != null) {
+        fw.write(code);
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
   private String translatePushCommand(String arg1, Integer arg2) {
     String code = null;
@@ -87,6 +101,11 @@ public class CodeWriter {
     return code;
   }
 
+  private String getConstantFormat(Integer constant) {
+    return "@" + constant + "\n" + "D=A\n"
+        + "@SP\n" + "A=M\n" + "M=D\n" + "@SP\n"
+        + "M=M+1\n";
+  }
 
   private String getArithFormat2(String jump) {
     return "D=M-D\n"
@@ -113,4 +132,29 @@ public class CodeWriter {
         """;
   }
 
- }
+  private String getPushFormat1(String arg1, Integer arg2) {
+    return "@" + arg1
+        + "\nD=M"
+        + "\n@" + arg2
+        + "\nA=D+A\n"
+        + "D=M\n"
+        + "@SP\n"
+        + "A=M\n"
+        + "M=D\n"
+        + "@SP\n"
+        + "M=M+1\n";
+  }
+
+
+  private String getPushFormat2(String index) {
+    return "@" + index
+        + "\nD=M\n"
+        + "@SP\n"
+        + "A=M\n"
+        + "M=D\n"
+        + "@SP\n"
+        + "M=M+1\n";
+  }
+
+
+}
