@@ -39,8 +39,7 @@ public class Main {
           parser.advance();
           if (parser.getCommandType().equals(C_ARITHMETIC)) {
             codeWriter.writeArithmetic(parser.arg1());
-          } else if (parser.getCommandType().equals(C_PUSH) || parser.getCommandType()
-              .equals(C_POP)) {
+          } else if (parser.getCommandType().equals(C_PUSH) || parser.getCommandType().equals(C_POP)) {
             codeWriter.writePushPop(parser.getCommandType(), parser.arg1(), parser.arg2());
           }
         }
