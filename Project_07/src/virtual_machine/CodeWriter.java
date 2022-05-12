@@ -1,5 +1,9 @@
 package virtual_machine;
 
+import static virtual_machine.CommandType.C_POP;
+import static virtual_machine.CommandType.C_PUSH;
+
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -116,7 +120,7 @@ public class CodeWriter {
     } else if (arg1.equals("that")) {
       code = getPushFormat1("THAT", arg2);
     }else if (arg1.equals("constant")) {
-//      code = getConstantFormat(arg2);
+      code = getConstantFormat(arg2);
     }else if (arg1.equals("pointer") && arg2 == 0) {
       code = getPushFormat2("THIS");
     } else if (arg1.equals("pointer") && arg2 == 1) {
