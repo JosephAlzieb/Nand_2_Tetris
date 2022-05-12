@@ -6,11 +6,13 @@ import java.io.IOException;
 
 public class CodeWriter {
 
-  private FileWriter fw;
+  private BufferedWriter fw;
+  private int jumpNumber = 0;
+
 
   public CodeWriter(File fileOut) {
     try {
-      fw = new FileWriter(fileOut);
+      fw = new BufferedWriter(new FileWriter(fileOut));
     } catch (IOException e) {
       e.printStackTrace();
     }
