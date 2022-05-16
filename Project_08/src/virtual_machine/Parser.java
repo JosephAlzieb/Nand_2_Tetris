@@ -3,6 +3,9 @@ package virtual_machine;
 import static virtual_machine.CommandType.C_ARITHMETIC;
 import static virtual_machine.CommandType.C_CALL;
 import static virtual_machine.CommandType.C_FUNCTION;
+import static virtual_machine.CommandType.C_GOTO;
+import static virtual_machine.CommandType.C_IF;
+import static virtual_machine.CommandType.C_LABEL;
 import static virtual_machine.CommandType.C_POP;
 import static virtual_machine.CommandType.C_PUSH;
 import static virtual_machine.CommandType.C_RETURN;
@@ -15,7 +18,8 @@ import java.util.Scanner;
 
 public class Parser {
 
-  private static List<String> arithCommands = List.of("add", "sub", "neg", "eq", "gt", "lt", "and", "or", "not");
+  private static final List<String> arithCommands = List.of("add", "sub", "neg", "eq", "gt", "lt", "and",
+      "or", "not");
   private Scanner scanner;
   private String currentCommand;
   private String arg0 = null;
@@ -71,13 +75,25 @@ public class Parser {
   }
 
 
-  public CommandType getCommandType(){
+  public CommandType getCommandType() {
     if (arg0.equals("push")) {
       return C_PUSH;
     } else if (arg0.equals("pop")) {
       return C_POP;
     } else if (arithCommands.contains(arg0)) {
       return C_ARITHMETIC;
+    } else if (arg0.equals("label")) {
+      return C_LABEL;
+    } else if (arg0.equals("goto")) {
+      return C_GOTO;
+    } else if (arg0.equals("if-goto")) {
+      return C_IF;
+    } else if (arg0.equals("function")) {
+      return C_FUNCTION;
+    } else if (arg0.equals("return")) {
+      return C_RETURN;
+    } else if (arg0.equals("call")) {
+      return C_CALL;
     }
     return null;
   }
@@ -93,7 +109,8 @@ public class Parser {
 
   public Integer arg2() {
     CommandType type = getCommandType();
-    if (type.equals(C_PUSH) || type.equals(C_POP) || type.equals(C_FUNCTION) || type.equals(C_CALL)) {
+    if (type.equals(C_PUSH) || type.equals(C_POP) || type.equals(C_FUNCTION) || type.equals(
+        C_CALL)) {
       return Integer.parseInt(arg2);
     }
     return null;
