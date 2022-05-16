@@ -11,6 +11,8 @@ public class CodeWriter {
 
   private BufferedWriter fw;
   private int jumpNumber = 0;
+  private static int labelNum = 0;
+
 
 
   public CodeWriter(File fileOut) {
@@ -250,8 +252,17 @@ public class CodeWriter {
   public void writeReturn() {
   }
 
-  public void writeCall(String arg1, Integer arg2) {
-
+  public void writeCall(String functionName, Integer numberOFParameter) {
+    String label = "RETURN_LABEL" + labelNum;
+    labelNum++;
+    try {
+      fw.write("@" + label + "\n" + "D=A\n@SP\nA=M\nM=D\n@SP\nM=M+1\n" + getPushFormat2("LCL")
+          + getPushFormat2("ARG") + getPushFormat2("THIS") + getPushFormat2("THAT") + "@SP\n"
+          + "D=M\n" + "@5\n" + "D=D-A\n" + "@" + numberOFParameter + "\n" + "D=D-A\n" + "@ARG\n" + "M=D\n"
+          + "@SP\n" + "D=M\n" + "@LCL\n" + "M=D\n" + "@" + functionName + "\n0;JMP\n(" + label + ")\n");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public void close() {
