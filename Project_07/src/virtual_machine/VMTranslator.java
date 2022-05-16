@@ -7,7 +7,7 @@ import static virtual_machine.CommandType.C_PUSH;
 import java.io.File;
 import java.util.ArrayList;
 
-public class Main {
+public class VMTranslator {
 
   public static void main(String[] args) {
     File fileIn = new File(args[0]);
