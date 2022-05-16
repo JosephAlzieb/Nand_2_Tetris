@@ -212,7 +212,12 @@ public class CodeWriter {
         + "M=D\n";
   }
 
-  public void writeLabel(String arg1) {
+  public void writeLabel(String label) {
+    try {
+      fw.write("(" + label + ")\n");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public void writeGoto(String arg1) {
