@@ -250,6 +250,16 @@ public class CodeWriter {
   }
 
   public void writeReturn() {
+    try {
+      fw.write("@LCL\n" + "D=M\n" + "@FRAME\n" + "M=D\n" + "@5\n" + "A=D-A\n" + "D=M\n" + "@RET\n"
+          + "M=D\n" + getPopFormat1("ARG", 0) + "@ARG\n" + "D=M\n" + "@SP\n" + "M=D+1\n"
+          + "@FRAME\n" + "D=M-1\n" + "AM=D\n" + "D=M\n" + "@THAT\n" + "M=D\n" + "@FRAME\n"
+          + "D=M-1\n" + "AM=D\n" + "D=M\n" + "@THIS\n" + "M=D\n" + "@FRAME\n" + "D=M-1\n" + "AM=D\n"
+          + "D=M\n" + "@ARG\n" + "M=D\n" + "@FRAME\n" + "D=M-1\n" + "AM=D\n" + "D=M\n" + "@LCL\n"
+          + "M=D\n" + "@RET\n" + "A=M\n" + "0;JMP\n");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public void writeCall(String functionName, Integer numberOFParameter) {
