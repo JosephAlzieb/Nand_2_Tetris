@@ -228,8 +228,12 @@ public class CodeWriter {
     }
   }
 
-  public void writeIf(String arg1) {
-
+  public void writeIf(String label) {
+    try {
+      fw.write(getArithFormat1() + "@" + label + "\nD;JNE\n");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public void writeFunction(String arg1, Integer arg2) {
