@@ -213,6 +213,26 @@ public class CodeWriter {
         + "M=D\n";
   }
 
+  public void writeLabel(String arg1) {
+  }
+
+  public void writeGoto(String arg1) {
+  }
+
+  public void writeIf(String arg1) {
+
+  }
+
+  public void writeFunction(String arg1, Integer arg2) {
+  }
+
+  public void writeReturn() {
+  }
+
+  public void writeCall(String arg1, Integer arg2) {
+
+  }
+
   public void close() {
     try {
       fw.close();
