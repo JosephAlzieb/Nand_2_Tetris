@@ -1,14 +1,6 @@
 package virtual_machine;
 
-import static virtual_machine.CommandType.C_ARITHMETIC;
-import static virtual_machine.CommandType.C_CALL;
-import static virtual_machine.CommandType.C_FUNCTION;
-import static virtual_machine.CommandType.C_GOTO;
-import static virtual_machine.CommandType.C_IF;
-import static virtual_machine.CommandType.C_LABEL;
-import static virtual_machine.CommandType.C_POP;
-import static virtual_machine.CommandType.C_PUSH;
-import static virtual_machine.CommandType.C_RETURN;
+import static virtual_machine.CommandType.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;

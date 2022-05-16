@@ -1,7 +1,6 @@
 package virtual_machine;
 
-import static virtual_machine.CommandType.C_POP;
-import static virtual_machine.CommandType.C_PUSH;
+import static virtual_machine.CommandType.*;
 
 import java.io.BufferedWriter;
 import java.io.File;
