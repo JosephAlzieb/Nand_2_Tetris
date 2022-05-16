@@ -220,7 +220,12 @@ public class CodeWriter {
     }
   }
 
-  public void writeGoto(String arg1) {
+  public void writeGoto(String label) {
+    try {
+      fw.write("@" + label + "\n0;JMP\n");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public void writeIf(String arg1) {
