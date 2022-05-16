@@ -236,7 +236,15 @@ public class CodeWriter {
     }
   }
 
-  public void writeFunction(String arg1, Integer arg2) {
+  public void writeFunction(String functionName, Integer numberOFParameter) {
+    try {
+      fw.write("(" + functionName + ")\n");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    for (int i = 0; i < numberOFParameter; i++) {
+      writePushPop(C_PUSH, "constant", 0);
+    }
   }
 
   public void writeReturn() {
