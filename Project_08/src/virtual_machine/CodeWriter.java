@@ -214,6 +214,22 @@ public class CodeWriter {
         + "M=D\n";
   }
 
+  public void writeInit() {
+    try {
+      fw.write("""
+          @256
+          D=A
+          @SP
+          M=D
+          """);  // initialize the stack pointer to 0x0100
+      writeCall("Sys.init", 0);  // call the function that calls Main.main
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+
+  }
+
   public void writeLabel(String label) {
     try {
       fw.write("(" + label + ")\n");
