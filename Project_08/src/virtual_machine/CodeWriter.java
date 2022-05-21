@@ -254,6 +254,16 @@ public class CodeWriter {
     }
   }
 
+  /**
+   * to implement the command function g nVars,
+   * we effect the following logic:
+   * g:
+   * repeat nVars times:
+   * push 0
+   *
+   * @param functionName
+   * @param numberOFParameter
+   */
   public void writeFunction(String functionName, Integer numberOFParameter) {
     try {
       fw.write("(" + functionName + ")\n");
@@ -265,6 +275,20 @@ public class CodeWriter {
     }
   }
 
+  /**
+   * what the method does is the following:
+   *
+   * frame = LCL              // frame is a temp. variable
+   * retAddr = *(frame-5)     // retAddr is a temp. variable
+   * *ARG = pop               // repositions the return value
+   * // for the caller
+   * SP=ARG+1                 // restores the caller’s SP
+   * THAT = *(frame-1)        // restores the caller’s THAT
+   * THIS = *(frame-2)        // restores the caller’s THIS
+   * ARG = *(frame-3)         // restores the caller’s ARG
+   * LCL = *(frame-4)         // restores the caller’s LCL
+   * goto retAddr             // goto returnAddre
+   */
   public void writeReturn() {
     try {
       fw.write("@LCL\n" + "D=M\n" + "@FRAME\n" + "M=D\n" + "@5\n" + "A=D-A\n" + "D=M\n" + "@RET\n"
@@ -278,6 +302,21 @@ public class CodeWriter {
     }
   }
 
+  /**
+   * what the method does is the following:
+   *
+   * push returnAddress     // saves the return address
+   * push LCL               // saves the LCL of f
+   * push ARG               // saves the ARG of f
+   * push THIS              // saves the THIS of f
+   * push THAT              // saves the THAT of f
+   * ARG = SP-nArgs-5       // repositions SP for g
+   * LCL = SP               // repositions LCL for g
+   * goto g                 // transfers control to g
+   * returnAddress:         // the generated symbol
+   * @param functionName
+   * @param numberOFParameter
+   */
   public void writeCall(String functionName, Integer numberOFParameter) {
     String label = "RETURN_LABEL" + labelNum;
     labelNum++;
