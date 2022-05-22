@@ -13,15 +13,19 @@ public class CodeWriter {
 
   private int jumpNumber = 0;
   private static int labelNum = 0;
-
-
+  private static String fileName = "";
 
   public CodeWriter(File fileOut) {
     try {
       fw = new BufferedWriter(new FileWriter(fileOut));
+      setFileName(fileOut.getName());
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  public void setFileName(String fileName) {
+    this.fileName = fileName;
   }
 
   public void writeArithmetic(String command) {
