@@ -10,21 +10,26 @@ import java.util.ArrayList;
 public class VMTranslator {
 
   public static void main(String[] args) {
-    File fileIn = new File(args[0]);
-    File fileOut = new File("result.asm");
-    ArrayList<File> files = new ArrayList<>();
     if (args.length != 1) {
       throw new IllegalArgumentException("there is no files to translate");
-    } else if (fileIn.isFile() && !(args[0].endsWith(".vm"))) {
-      throw new IllegalArgumentException("incorrect file type.");
-    } else if (fileIn.isFile() && args[0].endsWith(".vm")) {
-      files.add(fileIn);
-    } else {
-      // get Files with .vm in the directory
-      files = getVMFiles(fileIn);
     }
-    fileOut = new File("result.asm");
 
+    File fileIn = new File(args[0]);
+    File fileOut;
+    ArrayList<File> files = new ArrayList<>();
+    if (fileIn.isFile() && !(args[0].endsWith(".vm"))) {
+      throw new IllegalArgumentException("incorrect file type.");
+    } else {
+      if (args[0].endsWith(".vm")) {
+        files.add(fileIn);
+        String firstPart = args[0].substring(0, args[0].length() - 3);
+        fileOut = new File(firstPart + ".asm");
+      }
+      else{
+        files = getVMFiles(fileIn);
+        fileOut = new File(fileIn + ".asm");
+      }
+    }
       ArrayList<Parser> parsers = new ArrayList<>();
 
       for (File file : files) {
