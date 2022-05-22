@@ -8,15 +8,18 @@ import java.util.ArrayList;
 public class VMTranslator {
 
   public static void main(String[] args) {
+
+    if (args.length != 1) {
+      throw new IllegalArgumentException("there is no files to translate");
+    }
+
     File fileIn = new File(args[0]);
     File fileOut;
     ArrayList<File> files = new ArrayList<>();
-    if (args.length != 1) {
-      throw new IllegalArgumentException("there is no files to translate");
-    } else if (fileIn.isFile() && !(args[0].endsWith(".vm"))) {
+    if (fileIn.isFile() && !(args[0].endsWith(".vm"))) {
       throw new IllegalArgumentException("incorrect file type.");
     } else {
-      if (fileIn.isFile() && args[0].endsWith(".vm")) {
+      if (args[0].endsWith(".vm")) {
         files.add(fileIn);
         String firstPart = args[0].substring(0, args[0].length() - 3);
         fileOut = new File(firstPart + ".asm");
@@ -31,12 +34,14 @@ public class VMTranslator {
 
       for (File file : files) {
         Parser parser = new Parser(file);
+        parser.setFileName(file.getName());
         parsers.add(parser);
       }
 
       CodeWriter codeWriter = new CodeWriter(fileOut);
 
       for (Parser parser : parsers) {
+        codeWriter.setFileName(parser.getFileName());
         while (parser.hasMoreCommands()) {
           parser.advance();
           if (parser.getCommandType().equals(C_ARITHMETIC)) {
@@ -49,8 +54,6 @@ public class VMTranslator {
             codeWriter.writeGoto(parser.arg1());
           } else if (parser.getCommandType().equals(C_IF)) {
             codeWriter.writeIf(parser.arg1());
-
-
           } else if (parser.getCommandType().equals(C_FUNCTION)) {
             codeWriter.writeFunction(parser.arg1(), parser.arg2());
           } else if (parser.getCommandType().equals(C_RETURN)) {
