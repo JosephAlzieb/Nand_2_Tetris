@@ -10,6 +10,7 @@ import java.io.IOException;
 public class CodeWriter {
 
   private BufferedWriter fw;
+
   private int jumpNumber = 0;
   private static int labelNum = 0;
 
@@ -215,13 +216,16 @@ public class CodeWriter {
   }
 
   public void writeInit() {
-    try {
-      fw.write("""
+    String code = """
           @256
           D=A
           @SP
           M=D
-          """);  // initialize the stack pointer to 0x0100
+          """;
+    try {
+      fw.write(code);
+      System.out.println(code);
+// initialize the stack pointer to 0x0100
       writeCall("Sys.init", 0);  // call the function that calls Main.main
     } catch (IOException e) {
       e.printStackTrace();
@@ -231,24 +235,30 @@ public class CodeWriter {
   }
 
   public void writeLabel(String label) {
+    String code = "(" + label + ")\n";
     try {
-      fw.write("(" + label + ")\n");
+      fw.write(code);
+      System.out.println(code);
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
   public void writeGoto(String label) {
+    String code = "@" + label + "\n0;JMP\n";
     try {
-      fw.write("@" + label + "\n0;JMP\n");
+      fw.write(code);
+      System.out.println(code);
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
   public void writeIf(String label) {
+    String code = getArithFormat1() + "@" + label + "\nD;JNE\n";
     try {
-      fw.write(getArithFormat1() + "@" + label + "\nD;JNE\n");
+      fw.write(code);
+      System.out.println(code);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -265,8 +275,10 @@ public class CodeWriter {
    * @param numberOFParameter
    */
   public void writeFunction(String functionName, Integer numberOFParameter) {
+    String code = "(" + functionName + ")\n";
     try {
-      fw.write("(" + functionName + ")\n");
+      fw.write(code);
+      System.out.println(code);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -290,13 +302,15 @@ public class CodeWriter {
    * goto retAddr             // goto returnAddre
    */
   public void writeReturn() {
+    String code = "@LCL\n" + "D=M\n" + "@FRAME\n" + "M=D\n" + "@5\n" + "A=D-A\n" + "D=M\n" + "@RET\n"
+        + "M=D\n" + getPopFormat1("ARG", 0) + "@ARG\n" + "D=M\n" + "@SP\n" + "M=D+1\n"
+        + "@FRAME\n" + "D=M-1\n" + "AM=D\n" + "D=M\n" + "@THAT\n" + "M=D\n" + "@FRAME\n"
+        + "D=M-1\n" + "AM=D\n" + "D=M\n" + "@THIS\n" + "M=D\n" + "@FRAME\n" + "D=M-1\n" + "AM=D\n"
+        + "D=M\n" + "@ARG\n" + "M=D\n" + "@FRAME\n" + "D=M-1\n" + "AM=D\n" + "D=M\n" + "@LCL\n"
+        + "M=D\n" + "@RET\n" + "A=M\n" + "0;JMP\n";
     try {
-      fw.write("@LCL\n" + "D=M\n" + "@FRAME\n" + "M=D\n" + "@5\n" + "A=D-A\n" + "D=M\n" + "@RET\n"
-          + "M=D\n" + getPopFormat1("ARG", 0) + "@ARG\n" + "D=M\n" + "@SP\n" + "M=D+1\n"
-          + "@FRAME\n" + "D=M-1\n" + "AM=D\n" + "D=M\n" + "@THAT\n" + "M=D\n" + "@FRAME\n"
-          + "D=M-1\n" + "AM=D\n" + "D=M\n" + "@THIS\n" + "M=D\n" + "@FRAME\n" + "D=M-1\n" + "AM=D\n"
-          + "D=M\n" + "@ARG\n" + "M=D\n" + "@FRAME\n" + "D=M-1\n" + "AM=D\n" + "D=M\n" + "@LCL\n"
-          + "M=D\n" + "@RET\n" + "A=M\n" + "0;JMP\n");
+      fw.write(code);
+      System.out.println(code);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -320,11 +334,13 @@ public class CodeWriter {
   public void writeCall(String functionName, Integer numberOFParameter) {
     String label = "RETURN_LABEL" + labelNum;
     labelNum++;
+    String code = "@" + label + "\n" + "D=A\n@SP\nA=M\nM=D\n@SP\nM=M+1\n" + getPushFormat2("LCL")
+        + getPushFormat2("ARG") + getPushFormat2("THIS") + getPushFormat2("THAT") + "@SP\n"
+        + "D=M\n" + "@5\n" + "D=D-A\n" + "@" + numberOFParameter + "\n" + "D=D-A\n" + "@ARG\n" + "M=D\n"
+        + "@SP\n" + "D=M\n" + "@LCL\n" + "M=D\n" + "@" + functionName + "\n0;JMP\n(" + label + ")\n";
     try {
-      fw.write("@" + label + "\n" + "D=A\n@SP\nA=M\nM=D\n@SP\nM=M+1\n" + getPushFormat2("LCL")
-          + getPushFormat2("ARG") + getPushFormat2("THIS") + getPushFormat2("THAT") + "@SP\n"
-          + "D=M\n" + "@5\n" + "D=D-A\n" + "@" + numberOFParameter + "\n" + "D=D-A\n" + "@ARG\n" + "M=D\n"
-          + "@SP\n" + "D=M\n" + "@LCL\n" + "M=D\n" + "@" + functionName + "\n0;JMP\n(" + label + ")\n");
+      fw.write(code);
+      System.out.println(code);
     } catch (IOException e) {
       e.printStackTrace();
     }
