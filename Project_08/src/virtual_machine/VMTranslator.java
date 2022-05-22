@@ -39,8 +39,10 @@ public class VMTranslator {
       }
 
       CodeWriter codeWriter = new CodeWriter(fileOut);
+      codeWriter.writeInit();
 
-      for (Parser parser : parsers) {
+
+    for (Parser parser : parsers) {
         codeWriter.setFileName(parser.getFileName());
         while (parser.hasMoreCommands()) {
           parser.advance();
