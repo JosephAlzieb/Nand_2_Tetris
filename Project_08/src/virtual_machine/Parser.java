@@ -17,6 +17,7 @@ public class Parser {
   private String arg0 = null;
   private String arg1 = null;
   private String arg2 = null;
+  private String fileName = "";
 
   public Parser(File file) {
     try {
@@ -24,6 +25,14 @@ public class Parser {
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
+  }
+
+  public void setFileName(String fileName) {
+    this.fileName = fileName;
+  }
+
+  public String getFileName() {
+    return fileName;
   }
 
   public boolean hasMoreCommands() {
@@ -108,5 +117,4 @@ public class Parser {
     return null;
 
   }
-
 }
