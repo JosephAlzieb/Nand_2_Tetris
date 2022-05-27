@@ -45,7 +45,7 @@ public class VMTranslator {
     for (Parser parser : parsers) {
         codeWriter.setFileName(parser.getFileName());
         while (parser.hasMoreCommands()) {
-          parser.advance();
+          String currentCommand = parser.advance();
           if (parser.getCommandType().equals(C_ARITHMETIC)) {
             codeWriter.writeArithmetic(parser.arg1());
           } else if (parser.getCommandType().equals(C_PUSH) || parser.getCommandType().equals(C_POP)) {

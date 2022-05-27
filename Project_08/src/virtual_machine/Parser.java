@@ -13,7 +13,6 @@ public class Parser {
   private static final List<String> arithCommands = List.of("add", "sub", "neg", "eq", "gt", "lt", "and",
       "or", "not");
   private Scanner scanner;
-  private String currentCommand;
   private String arg0 = null;
   private String arg1 = null;
   private String arg2 = null;
@@ -52,7 +51,7 @@ public class Parser {
     return newLine;
   }
 
-  public void advance() {
+  public String advance() {
     String nextLine = scanner.nextLine();
     while (nextLine.equals("") || hasComments(nextLine)) {
       if (hasComments(nextLine)) {
@@ -63,7 +62,7 @@ public class Parser {
       }
     }
     System.out.println("=============================");
-    currentCommand = nextLine;
+    String currentCommand = nextLine;
     System.out.println(currentCommand);
     String[] commands = currentCommand.split(" ");
     arg0 = commands[0];
@@ -73,6 +72,8 @@ public class Parser {
     if (commands.length > 2) {
       arg2 = commands[2];
     }
+
+    return currentCommand;
   }
 
 

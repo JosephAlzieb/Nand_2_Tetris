@@ -13,7 +13,7 @@ public class CodeWriter {
 
   private int jumpNumber = 0;
   private static int labelNum = 0;
-  private static String fileName = "";
+  private String fileName = "";
 
   public CodeWriter(File fileOut) {
     try {
@@ -120,7 +120,6 @@ public class CodeWriter {
       code = getPushFormat1("THIS", arg2);
     }else if (arg1.equals("local")) {
       code = getPushFormat1("LCL", arg2);
-
     } else if (arg1.equals("argument")) {
       code = getPushFormat1("ARG", arg2);
     } else if (arg1.equals("that")) {
@@ -356,6 +355,5 @@ public class CodeWriter {
     } catch (IOException e) {
       e.printStackTrace();
     }
-
   }
 }
