@@ -39,6 +39,17 @@ public class JackAnalyzer {
       e.printStackTrace();
     }
 
+    for (File file : files) {
+      String fileOutName = file.toString().substring(0, file.toString().length() - 5) + ".xml";
+      File fileOutFile = new File(fileOutName);
+      // compile the files
+//      CompilationEngine compilationEngine = new CompilationEngine(file, fileOutFile);
+//      compilationEngine.compileClass();
+
+
+    }
+
+
     try {
       fw.close();
     } catch (IOException e) {
