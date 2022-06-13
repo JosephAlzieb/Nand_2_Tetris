@@ -14,20 +14,23 @@ public class JackAnalyzer {
 
     File fileIn = new File(args[0]);
     File fileOut;
+    String fileNameOut = "";
     ArrayList<File> files = new ArrayList<>();
     if (fileIn.isFile() && !(args[0].endsWith(".jack"))) {
       throw new IllegalArgumentException("incorrect file type.");
     } else {
       if (args[0].endsWith(".jack")) {
         files.add(fileIn);
-        String firstPart = args[0].substring(0, args[0].length() - 5);
-        fileOut = new File(firstPart + ".xml");
+        fileNameOut = args[0].substring(0, args[0].length() - 5);
       }
       else{
         files = getJackFiles(fileIn);
-        fileOut = new File(fileIn + ".xml");
+        fileNameOut = args[0];
       }
     }
+
+    fileNameOut = fileNameOut + ".xml";
+    fileOut = new File(fileNameOut);
 
     FileWriter fw = null;
     try {
