@@ -1,6 +1,8 @@
 package compiler;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class JackAnalyzer {
@@ -25,6 +27,19 @@ public class JackAnalyzer {
         files = getJackFiles(fileIn);
         fileOut = new File(fileIn + ".xml");
       }
+    }
+
+    FileWriter fw = null;
+    try {
+      fw = new FileWriter(fileOut);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    try {
+      fw.close();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
