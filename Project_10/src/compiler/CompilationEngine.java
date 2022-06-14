@@ -165,5 +165,30 @@ public class CompilationEngine {
 
   }
 
+  // compiles a (possibly empty) parameter list including the "()"
+  public void compileParameterList() {
+    jtoken.advance();
+    try {
+      // until reach the end - )
+      while (!(jtoken.tokenType().equals("SYMBOL") && jtoken.symbol() == ')')) {
+        if (jtoken.tokenType().equals("IDENTIFIER")) {
+          fw.write("<identifier> " + jtoken.identifier() + " </identifier>\n");
+          jtoken.advance();
+        } else if (jtoken.tokenType().equals("KEYWORD")) {
+          fw.write("<keyword> " + jtoken.keyWord() + "</keyword>\n");
+          jtoken.advance();
+        }
+        // commas separate the list, if there are multiple
+        else if ((jtoken.tokenType().equals("SYMBOL")) && (jtoken.symbol() == ',')) {
+          fw.write("<symbol> , </symbol>\n");
+          jtoken.advance();
+
+        }
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
 
 }
