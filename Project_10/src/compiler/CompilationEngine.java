@@ -233,4 +233,40 @@ public class CompilationEngine {
 
   }
 
+  // compiles a sequence of statements, not including the enclosing "{}" - do, let, if, while or return
+  public void compileStatements() {
+    try {
+      if (jtoken.symbol() == '}' && (jtoken.tokenType().equals("SYMBOL"))) {
+        return;
+      } else if (jtoken.keyWord().equals("do") && (jtoken.tokenType().equals("KEYWORD"))) {
+        fw.write("<doStatement>\n ");
+        compileDo();
+        fw.write((" </doStatement>\n"));
+
+      } else if (jtoken.keyWord().equals("let") && (jtoken.tokenType().equals("KEYWORD"))) {
+        fw.write("<letStatement>\n ");
+        compileLet();
+        fw.write((" </letStatement>\n"));
+      } else if (jtoken.keyWord().equals("if") && (jtoken.tokenType().equals("KEYWORD"))) {
+        fw.write("<ifStatement>\n ");
+        compileIf();
+        fw.write((" </ifStatement>\n"));
+      } else if (jtoken.keyWord().equals("while") && (jtoken.tokenType().equals("KEYWORD"))) {
+        fw.write("<whileStatement>\n ");
+        compileWhile();
+        fw.write((" </whileStatement>\n"));
+      } else if (jtoken.keyWord().equals("return") && (jtoken.tokenType().equals("KEYWORD"))) {
+        fw.write("<returnStatement>\n ");
+        compileReturn();
+        fw.write((" </returnStatement>\n"));
+      }
+      jtoken.advance();
+      compileStatements();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+  }
+
+
 }
