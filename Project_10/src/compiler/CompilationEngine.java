@@ -19,4 +19,24 @@ public class CompilationEngine {
     }
     bFirstRoutine = true;
   }
+
+  public void compileClass() {
+    try {
+      jtoken.advance();
+      fw.write("<class>\n");
+      fw.write("<keyword> class </keyword>\n");
+      jtoken.advance();
+      fw.write("<identifier> " + jtoken.identifier() + " </identifier>\n");
+      jtoken.advance();
+      fw.write("<symbol> { </symbol>\n");
+      compileClassVarDec();
+      compileSubRoutine();
+      fw.write("<symbol> } </symbol>\n");
+      fw.write("</class>\n");
+      fw.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+  }
 }
