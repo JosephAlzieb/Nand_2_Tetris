@@ -8,7 +8,7 @@ public class CompilationEngine {
 
   private FileWriter fw;
   private JackTokenizer jtoken;
-  private boolean bFirstRoutine;
+  private boolean firstRoutine;
 
   public CompilationEngine(File inFile, File outFile) {
     try {
@@ -17,7 +17,7 @@ public class CompilationEngine {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    bFirstRoutine = true;
+    firstRoutine = true;
   }
 
   public void compileClass() {
@@ -96,8 +96,8 @@ public class CompilationEngine {
         return;
       }
       // subroutinedec tag
-      if ((bFirstRoutine) && (jtoken.keyWord().equals("function") || jtoken.keyWord().equals("method") || jtoken.keyWord().equals("constructor"))) {
-        bFirstRoutine = false;
+      if ((firstRoutine) && (jtoken.keyWord().equals("function") || jtoken.keyWord().equals("method") || jtoken.keyWord().equals("constructor"))) {
+        firstRoutine = false;
         fw.write("<subroutineDec>\n");
         hasSubRoutines = true;
       }
@@ -153,7 +153,7 @@ public class CompilationEngine {
       if (hasSubRoutines) {
         fw.write("</subroutineBody>\n");
         fw.write("</subroutineDec>\n");
-        bFirstRoutine = true;
+        firstRoutine = true;
       }
 
       // recursive call
