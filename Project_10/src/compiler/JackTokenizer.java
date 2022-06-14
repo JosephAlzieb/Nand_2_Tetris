@@ -219,10 +219,51 @@ public class JackTokenizer {
     } else {
       return;
     }
+  }
 
+  public void decrementPointer() {
+    if (pointer > 0) {
+      pointer--;
+    }
+  }
+  // returns the type of the current token - keyword, symbol, identifier, int_constant, or string_constant
+  public String tokenType() {
+    return mTokenType;
 
   }
 
+  // returns the keyword which is the current token, should be called only when tokenType() is keyword
+  public String keyWord() {
+    return mKeyWord;
+  }
 
+  // returns character which is current token, should be called only when tokenType() is symbol
+  public char symbol() {
+    return mSymbol;
+  }
 
+  // returns identifier which is the current token - should be called only when tokenType() is identifier
+  public String identifier() {
+    return mIdentifier;
+  }
+
+  // returns integer value of the current token - should be called only when tokenType() is INT_CONST
+  public int intVal() {
+    return mIntVal;
+  }
+
+  // returns string value of current token without double quotes, should be called only when tokenType() is string_const
+  public String stringVal() {
+    return mStringVal;
+  }
+
+  // indicates if a symbol is an operation, i.e., =, +, -, &, |, etc.
+  public boolean isOperation() {
+    for (int i = 0; i < operations.length(); i++) {
+      if (operations.charAt(i) == mSymbol) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
