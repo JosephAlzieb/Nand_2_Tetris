@@ -83,8 +83,87 @@ public class CompilationEngine {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
 
+  // compiles a complete method, function, or a constructor
+  public void compileSubRoutine() {
+    boolean hasSubRoutines = false;
+
+    jtoken.advance();
+    try {
+      // once reach the end, return  - no more subroutines - base case for the recursive call
+      if (jtoken.symbol() == '}' && jtoken.tokenType().equals("SYMBOL")) {
+        return;
+      }
+      // subroutinedec tag
+      if ((bFirstRoutine) && (jtoken.keyWord().equals("function") || jtoken.keyWord().equals("method") || jtoken.keyWord().equals("constructor"))) {
+        bFirstRoutine = false;
+        fw.write("<subroutineDec>\n");
+        hasSubRoutines = true;
+      }
+      // function ,e
+      if (jtoken.keyWord().equals("function") || jtoken.keyWord().equals("method") || jtoken.keyWord().equals("constructor")) {
+        hasSubRoutines = true;
+        fw.write("<keyword> " + jtoken.keyWord() + " </keyword>\n");
+        jtoken.advance();
+      }
+      // if there is an identifier in the subroutine statement position 2 e.g. function Square getX()
+      if (jtoken.tokenType().equals("IDENTIFIER")) {
+        fw.write("<identifier> " + jtoken.identifier() + " </identifier>\n");
+        jtoken.advance();
+      }
+      // if keyword instead for subroutine statement position 2 e.g. function int getX()
+      else if (jtoken.tokenType().equals("KEYWORD")) {
+        fw.write("<keyword> " + jtoken.keyWord() + "</keyword>\n");
+        jtoken.advance();
+      }
+      // name of the subroutine
+      if (jtoken.tokenType().equals("IDENTIFIER")) {
+        fw.write("<identifier> " + jtoken.identifier() + " </identifier>\n");
+        jtoken.advance();
+      }
+      // get parameters, or lack there of
+      if (jtoken.symbol() == '(') {
+        fw.write("<symbol> ( </symbol>\n");
+        fw.write("<parameterList>\n");
+
+        compileParameterList();
+        fw.write("</parameterList>\n");
+        fw.write("<symbol> ) </symbol>\n");
+
+      }
+      jtoken.advance();
+      // start subroutine body
+      if (jtoken.symbol() == '{') {
+        fw.write("<subroutineBody>\n");
+        fw.write("<symbol> { </symbol>\n");
+        jtoken.advance();
+      }
+      // get all var declarations in the subroutine
+      while (jtoken.keyWord().equals("var") && (jtoken.tokenType().equals("KEYWORD"))) {
+        fw.write("<varDec>\n ");
+        jtoken.decrementPointer();
+        compileVarDec();
+        fw.write(" </varDec>\n");
+      }
+      fw.write("<statements>\n");
+      compileStatements();
+      fw.write("</statements>\n");
+      fw.write("<symbol> " + jtoken.symbol() + " </symbol>\n");
+      if (hasSubRoutines) {
+        fw.write("</subroutineBody>\n");
+        fw.write("</subroutineDec>\n");
+        bFirstRoutine = true;
+      }
+
+      // recursive call
+      compileSubRoutine();
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
 
   }
+
 
 }
