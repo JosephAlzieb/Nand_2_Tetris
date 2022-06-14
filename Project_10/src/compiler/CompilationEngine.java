@@ -268,5 +268,24 @@ public class CompilationEngine {
 
   }
 
+  // compiles a do statement
+  public void compileDo() {
+    try {
+      if (jtoken.keyWord().equals("do")) {
+        fw.write("<keyword> do </keyword>\n");
+      }
+      // function call
+      compileCall();
+      // semi colon
+      jtoken.advance();
+      fw.write("<symbol> " + jtoken.symbol() + " </symbol>\n");
+
+
+    } catch (IOException e) {
+      e.printStackTrace();
+
+    }
+  }
+
 
 }
