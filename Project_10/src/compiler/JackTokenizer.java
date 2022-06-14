@@ -8,107 +8,107 @@ import java.util.Scanner;
 
 public class JackTokenizer {
 
-  private Scanner mScanner;
+  private Scanner scanner;
   private static ArrayList<String> keyWords;
   private static String symbols;
   private static String operations;
   private ArrayList<String> tokens;
-  private String jackcode;
-  private String mTokenType;
-  private String mKeyWord;
-  private char mSymbol;
-  private String mIdentifier;
-  private String mStringVal;
-  private int mIntVal;
+  private String jackCode;
+  private String tokenType;
+  private String keyWord;
+  private char symbol;
+  private String identifier;
+  private String stringVal;
+  private int intVal;
   private static ArrayList<String> libraries;
   private int pointer;
-  private boolean bFirst;
+  private boolean first;
 
   public JackTokenizer(File file) {
     try {
-      mScanner = new Scanner(new FileReader(file));
+      scanner = new Scanner(new FileReader(file));
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
 
-    jackcode = "";
-    while (mScanner.hasNextLine()) {
-      String strLine = mScanner.nextLine();
+    jackCode = "";
+    while (scanner.hasNextLine()) {
+      String strLine = scanner.nextLine();
       while (strLine.equals("") || hasComments(strLine)) {
         if (hasComments(strLine)) {
           strLine = removeComments(strLine);
         }
         if (strLine.trim().equals("")) {
-          if (mScanner.hasNextLine()) {
-            strLine = mScanner.nextLine();
+          if (scanner.hasNextLine()) {
+            strLine = scanner.nextLine();
           } else {
             break;
           }
         }
       }
-      jackcode += strLine.trim();
+      jackCode += strLine.trim();
     }
     // add tokens from the jackcode string into an arraylist of the tokens
     tokens = new ArrayList<String>();
-    while (jackcode.length() > 0) {
-      while (jackcode.charAt(0) == ' ') {
-        jackcode = jackcode.substring(1);
+    while (jackCode.length() > 0) {
+      while (jackCode.charAt(0) == ' ') {
+        jackCode = jackCode.substring(1);
       }
       // keyword
       for (int i = 0; i < keyWords.size(); i++) {
-        if (jackcode.startsWith(keyWords.get(i).toString())) {
+        if (jackCode.startsWith(keyWords.get(i).toString())) {
           String keyword = keyWords.get(i).toString();
           tokens.add(keyword);
-          jackcode = jackcode.substring(keyword.length());
+          jackCode = jackCode.substring(keyword.length());
         }
 
       }
       // symbol
-      if (symbols.contains(jackcode.substring(0, 1))) {
-        char symbol = jackcode.charAt(0);
+      if (symbols.contains(jackCode.substring(0, 1))) {
+        char symbol = jackCode.charAt(0);
         tokens.add(Character.toString(symbol));
-        jackcode = jackcode.substring(1);
+        jackCode = jackCode.substring(1);
       }
       // integer constant
-      else if (Character.isDigit(jackcode.charAt(0))) {
-        String value = jackcode.substring(0, 1);
-        jackcode = jackcode.substring(1);
-        while (Character.isDigit(jackcode.charAt(0))) {
-          value += jackcode.substring(0, 1);
-          jackcode = jackcode.substring(1);
+      else if (Character.isDigit(jackCode.charAt(0))) {
+        String value = jackCode.substring(0, 1);
+        jackCode = jackCode.substring(1);
+        while (Character.isDigit(jackCode.charAt(0))) {
+          value += jackCode.substring(0, 1);
+          jackCode = jackCode.substring(1);
 
         }
         tokens.add(value);
 
       }
       // string constant
-      else if (jackcode.substring(0, 1).equals("\"")) {
-        jackcode = jackcode.substring(1);
+      else if (jackCode.substring(0, 1).equals("\"")) {
+        jackCode = jackCode.substring(1);
         String strString = "\"";
-        while ((jackcode.charAt(0) != '\"')) {
-          strString += jackcode.charAt(0);
-          jackcode = jackcode.substring(1);
+        while ((jackCode.charAt(0) != '\"')) {
+          strString += jackCode.charAt(0);
+          jackCode = jackCode.substring(1);
 
         }
         strString = strString + "\"";
         tokens.add(strString);
-        jackcode = jackcode.substring(1);
+        jackCode = jackCode.substring(1);
 
       }
       // identifier
-      else if (Character.isLetter(jackcode.charAt(0)) || (jackcode.substring(0, 1).equals("_"))) {
-        String strIdentifier = jackcode.substring(0, 1);
-        jackcode = jackcode.substring(1);
-        while ((Character.isLetter(jackcode.charAt(0))) || (jackcode.substring(0, 1).equals("_"))) {
-          strIdentifier += jackcode.substring(0, 1);
-          jackcode = jackcode.substring(1);
+      else if (Character.isLetter(jackCode.charAt(0)) || (jackCode.substring(0, 1).equals("_"))) {
+        String strIdentifier = jackCode.substring(0, 1);
+        jackCode = jackCode.substring(1);
+        while ((Character.isLetter(jackCode.charAt(0))) || (jackCode.substring(0, 1).equals("_"))) {
+          strIdentifier += jackCode.substring(0, 1);
+          jackCode = jackCode.substring(1);
         }
 
         tokens.add(strIdentifier);
 
       }
       // start out with pointer at position 0
-      bFirst = true;
+      first = true;
       pointer = 0;
 
     }
@@ -190,31 +190,31 @@ public class JackTokenizer {
 
   public void advance() {
     if (hasMoreTokens()) {
-      if (!bFirst) {
+      if (!first) {
         pointer++;
       }
       // if at position 0 of tokens, we do not want to increment yet
-      else if (bFirst) {
-        bFirst = false;
+      else if (first) {
+        first = false;
       }
       String currentItem = tokens.get(pointer);
       // assign current token type and corresponding field variable (keyword, symbol, intval, stringval, or identifier)
       // for this current token - position of where we are in the tokens array
       if (keyWords.contains(currentItem)) {
-        mTokenType = "KEYWORD";
-        mKeyWord = currentItem;
+        tokenType = "KEYWORD";
+        keyWord = currentItem;
       } else if (symbols.contains(currentItem)) {
-        mSymbol = currentItem.charAt(0);
-        mTokenType = "SYMBOL";
+        symbol = currentItem.charAt(0);
+        tokenType = "SYMBOL";
       } else if (Character.isDigit(currentItem.charAt(0))) {
-        mIntVal = Integer.parseInt(currentItem);
-        mTokenType = "INT_CONST";
+        intVal = Integer.parseInt(currentItem);
+        tokenType = "INT_CONST";
       } else if (currentItem.substring(0, 1).equals("\"")) {
-        mTokenType = "STRING_CONST";
-        mStringVal = currentItem.substring(1, currentItem.length() - 1);
+        tokenType = "STRING_CONST";
+        stringVal = currentItem.substring(1, currentItem.length() - 1);
       } else if ((Character.isLetter(currentItem.charAt(0))) || (currentItem.charAt(0) == '_')) {
-        mTokenType = "IDENTIFIER";
-        mIdentifier = currentItem;
+        tokenType = "IDENTIFIER";
+        identifier = currentItem;
       }
     } else {
       return;
@@ -228,39 +228,39 @@ public class JackTokenizer {
   }
   // returns the type of the current token - keyword, symbol, identifier, int_constant, or string_constant
   public String tokenType() {
-    return mTokenType;
+    return tokenType;
 
   }
 
   // returns the keyword which is the current token, should be called only when tokenType() is keyword
   public String keyWord() {
-    return mKeyWord;
+    return keyWord;
   }
 
   // returns character which is current token, should be called only when tokenType() is symbol
   public char symbol() {
-    return mSymbol;
+    return symbol;
   }
 
   // returns identifier which is the current token - should be called only when tokenType() is identifier
   public String identifier() {
-    return mIdentifier;
+    return identifier;
   }
 
   // returns integer value of the current token - should be called only when tokenType() is INT_CONST
   public int intVal() {
-    return mIntVal;
+    return intVal;
   }
 
   // returns string value of current token without double quotes, should be called only when tokenType() is string_const
   public String stringVal() {
-    return mStringVal;
+    return stringVal;
   }
 
   // indicates if a symbol is an operation, i.e., =, +, -, &, |, etc.
   public boolean isOperation() {
     for (int i = 0; i < operations.length(); i++) {
-      if (operations.charAt(i) == mSymbol) {
+      if (operations.charAt(i) == symbol) {
         return true;
       }
     }
