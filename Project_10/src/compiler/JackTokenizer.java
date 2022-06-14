@@ -115,4 +115,33 @@ public class JackTokenizer {
 
   }
 
+  // test if the line argument has comments in it
+  private boolean hasComments(String strLine) {
+    boolean bHasComments = false;
+    if (strLine.contains("//") || strLine.contains("/*") || strLine.startsWith(" *")) {
+      bHasComments = true;
+    }
+    return bHasComments;
+
+  }
+
+  // removes comments from a line
+  private String removeComments(String strLine) {
+    String strNoComments = strLine;
+    if (hasComments(strLine)) {
+      int offSet;
+      if (strLine.startsWith(" *")) {
+        offSet = strLine.indexOf("*");
+      } else if (strLine.contains("/*")) {
+        offSet = strLine.indexOf("/*");
+      } else {
+        offSet = strLine.indexOf("//");
+      }
+      strNoComments = strLine.substring(0, offSet).trim();
+
+    }
+    return strNoComments;
+  }
+
+
 }
