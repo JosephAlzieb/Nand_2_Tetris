@@ -358,5 +358,33 @@ public class CompilationEngine {
     }
   }
 
+  // compiles a while statement
+  public void compileWhile() {
+    try {
+      // while
+      fw.write("<keyword>" + jtoken.keyWord() + "</keyword>\n");
+      jtoken.advance();
+      // (
+      fw.write("<symbol>" + jtoken.symbol() + "</symbol>\n");
+      // compile inside of () - expression
+      compileExpression();
+      // )
+      jtoken.advance();
+      fw.write("<symbol>" + jtoken.symbol() + "</symbol>\n");
+      jtoken.advance();
+      // {
+      fw.write("<symbol>" + jtoken.symbol() + "</symbol>\n");
+      // inside of while statement
+      fw.write("<statements>\n");
+      compileStatements();
+      fw.write("</statements>\n");
+      // }
+      fw.write("<symbol>" + jtoken.symbol() + "</symbol>\n");
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
 
 }
