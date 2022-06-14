@@ -403,5 +403,42 @@ public class CompilationEngine {
     }
   }
 
+  // compiles an if statement, possibly with a trailing else clause
+  public void compileIf() {
+    try {
+      fw.write("<keyword> if </keyword>\n");
+      jtoken.advance();
+      fw.write("<symbol> ( </symbol>\n");
+      // expression within if () condition
+      compileExpression();
+      fw.write("<symbol> ) </symbol>\n");
+      jtoken.advance();
+      fw.write("<symbol> { </symbol>\n");
+      jtoken.advance();
+      fw.write("<statements>\n");
+      // compile statements within if clause { }
+      compileStatements();
+      fw.write("</statements>\n");
+      fw.write("<symbol> } </symbol>\n");
+      jtoken.advance();
+      // if there is an else clause of the if statement
+      if (jtoken.tokenType().equals("KEYWORD") && jtoken.keyWord().equals("else")) {
+        fw.write("<keyword> else </keyword>\n");
+        jtoken.advance();
+        fw.write("<symbol> { </symbol>\n");
+        jtoken.advance();
+        fw.write("<statements>\n");
+        // compile statements within else clause
+        compileStatements();
+        fw.write("</statements>\n");
+        fw.write("<symbol> } </symbol>\n");
+      } else {
+        // keep placeholder correct
+        jtoken.decrementPointer();
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
 }
