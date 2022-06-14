@@ -441,4 +441,37 @@ public class CompilationEngine {
     }
   }
 
+  // compiles an expression
+  public void compileExpression() {
+    try {
+      fw.write("<expression>\n");
+      compileTerm();
+      while (true) {
+        jtoken.advance();
+        if (jtoken.tokenType().equals("SYMBOL") && jtoken.isOperation()) {
+          // < > & = have different xml code
+          if (jtoken.symbol() == '<') {
+            fw.write("<symbol> &lt; </symbol>\n");
+          } else if (jtoken.symbol() == '>') {
+            fw.write("<symbol> &gt; </symbol>\n");
+          } else if (jtoken.symbol() == '&') {
+            fw.write("<symbol> &amp; </symbol>\n");
+          } else {
+            fw.write("<symbol> " + jtoken.symbol() + " </symbol>\n");
+          }
+          compileTerm();
+        } else {
+          jtoken.decrementPointer();
+          break;
+        }
+      }
+      fw.write("</expression>\n");
+
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+
 }
