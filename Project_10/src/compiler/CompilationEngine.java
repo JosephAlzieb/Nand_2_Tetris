@@ -326,5 +326,37 @@ public class CompilationEngine {
     }
   }
 
+  // compiles a let statement
+  public void compileLet() {
+    try {
+      fw.write("<keyword>" + jtoken.keyWord() + "</keyword>\n");
+      jtoken.advance();
+      fw.write("<identifier> " + jtoken.identifier() + " </identifier>\n");
+      jtoken.advance();
+      if ((jtoken.tokenType().equals("SYMBOL")) && (jtoken.symbol() == '[')) {
+        // there is an expression -- because we have x[5] for example
+        fw.write("<symbol> " + jtoken.symbol() + " </symbol>\n");
+        compileExpression();
+        jtoken.advance();
+        if ((jtoken.tokenType().equals("SYMBOL")) && ((jtoken.symbol() == ']'))) {
+          fw.write("<symbol> " + jtoken.symbol() + " </symbol>\n");
+        }
+        // only advance if there is an expression
+        jtoken.advance();
+
+      }
+
+      // = sign
+      fw.write("<symbol> " + jtoken.symbol() + " </symbol>\n");
+
+      compileExpression();
+      // semi colon
+      fw.write("<symbol> " + jtoken.symbol() + " </symbol>\n");
+      jtoken.advance();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
 
 }
