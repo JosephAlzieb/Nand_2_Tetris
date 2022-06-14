@@ -287,5 +287,44 @@ public class CompilationEngine {
     }
   }
 
+  private void compileCall() {
+    jtoken.advance();
+    try {
+      // first part
+      fw.write("<identifier> " + jtoken.identifier() + "</identifier>\n");
+      jtoken.advance();
+      // if . - then is something like Screen.erase()
+      if ((jtoken.tokenType().equals("SYMBOL")) && (jtoken.symbol() == '.')) {
+        fw.write("<symbol> " + jtoken.symbol() + "</symbol>\n");
+        jtoken.advance();
+        fw.write("<identifier> " + jtoken.identifier() + " </identifier>\n");
+        jtoken.advance();
+        fw.write("<symbol> " + jtoken.symbol() + " </symbol>\n");
+        // parameters in the parentheses
+        fw.write("<expressionList>\n");
+        compileExpressionList();
+        fw.write("</expressionList>\n");
+        jtoken.advance();
+        fw.write("<symbol> " + jtoken.symbol() + " </symbol>\n");
+
+
+      }
+      // if ( then is something like erase()
+      else if ((jtoken.tokenType().equals("SYMBOL")) && (jtoken.symbol() == '(')) {
+        fw.write("<symbol> " + jtoken.symbol() + " </symbol>\n");
+        fw.write("<expressionList>\n");
+        compileExpressionList();
+        fw.write("</expressionList>\n");
+        // parentheses )
+        jtoken.advance();
+        fw.write("<symbol> " + jtoken.symbol() + " </symbol>\n");
+
+
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
 
 }
