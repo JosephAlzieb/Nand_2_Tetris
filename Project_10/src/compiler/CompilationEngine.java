@@ -386,5 +386,22 @@ public class CompilationEngine {
     }
   }
 
+  // compiles a return statement
+  public void compileReturn() {
+    try {
+      fw.write("<keyword> return </keyword>\n");
+      jtoken.advance();
+      if (!((jtoken.tokenType().equals("SYMBOL") && jtoken.symbol() == ';'))) {
+        jtoken.decrementPointer();
+        compileExpression();
+      }
+      if (jtoken.tokenType().equals("SYMBOL") && jtoken.symbol() == ';') {
+        fw.write("<symbol> ; </symbol>\n");
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
 
 }
