@@ -473,5 +473,67 @@ public class CompilationEngine {
     }
   }
 
+  // compiles a term - if current token is an identifier, must distinguish between variable, array entry, and subroutine call
+  // single look ahead token which may be "{" "(" or "." to distinguish between the three possibilities
+  public void compileTerm() {
+    try {
+      fw.write("<term>\n");
+      jtoken.advance();
+      if (jtoken.tokenType().equals("IDENTIFIER")) {
+        String prevIdentifier = jtoken.identifier();
+        jtoken.advance();
+        // for [] terms
+        if (jtoken.tokenType().equals("SYMBOL") && jtoken.symbol() == '[') {
+          fw.write("<identifier> " + prevIdentifier + " </identifier>\n");
+          fw.write("<symbol> [ </symbol>\n");
+          compileExpression();
+          jtoken.advance();
+          fw.write("<symbol> ] </symbol>\n");
+        }
+        // for ( or . - subroutine calls
+        else if (jtoken.tokenType().equals("SYMBOL") && (jtoken.symbol() == '(' || jtoken.symbol() == '.')) {
+          jtoken.decrementPointer();
+          jtoken.decrementPointer();
+          compileCall();
+
+        } else {
+          fw.write("<identifier> " + prevIdentifier + " </identifier>\n");
+          jtoken.decrementPointer();
+        }
+      } else {
+        // integer
+        if (jtoken.tokenType().equals("INT_CONST")) {
+          fw.write("<integerConstant> " + jtoken.intVal() + " </integerConstant>\n");
+
+        }
+        // strings
+        else if (jtoken.tokenType().equals("STRING_CONST")) {
+          fw.write("<stringConstant> " + jtoken.stringVal() + " </stringConstant>\n");
+        }
+        // this true null or false
+        else if (jtoken.tokenType().equals("KEYWORD") && (jtoken.keyWord().equals("this") || jtoken.keyWord().equals("null")
+            || jtoken.keyWord().equals("false") || jtoken.keyWord().equals("true"))) {
+          fw.write("<keyword> " + jtoken.keyWord() + " </keyword>\n");
+        }
+        // parenthetical separation
+        else if (jtoken.tokenType().equals("SYMBOL") && jtoken.symbol() == '(') {
+          fw.write("<symbol>" + jtoken.symbol() + "</symbol>\n");
+          compileExpression();
+          jtoken.advance();
+          fw.write("<symbol> " + jtoken.symbol() + "</symbol>\n");
+        }
+        // unary operators
+        else if (jtoken.tokenType().equals("SYMBOL") && (jtoken.symbol() == '-' || jtoken.symbol() == '~')) {
+          fw.write("<symbol> " + jtoken.symbol() + "</symbol>\n");
+          // recursive call
+          compileTerm();
+        }
+      }
+      fw.write("</term>\n");
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 
 }
