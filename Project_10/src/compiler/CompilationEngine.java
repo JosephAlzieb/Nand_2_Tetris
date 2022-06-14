@@ -536,4 +536,30 @@ public class CompilationEngine {
     }
   }
 
+  // compiles comma separated list of expressions
+  public void compileExpressionList() {
+    jtoken.advance();
+    // end of list
+    if (jtoken.symbol() == ')' && jtoken.tokenType().equals("SYMBOL")) {
+      jtoken.decrementPointer();
+    } else {
+      jtoken.decrementPointer();
+      compileExpression();
+    }
+    while (true) {
+      jtoken.advance();
+      if (jtoken.tokenType().equals("SYMBOL") && jtoken.symbol() == ',') {
+        try {
+          fw.write("<symbol> , </symbol>\n");
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        compileExpression();
+      } else {
+        jtoken.decrementPointer();
+        break;
+      }
+    }
+
+  }
 }
