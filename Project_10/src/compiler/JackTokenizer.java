@@ -184,5 +184,9 @@ public class JackTokenizer {
     return strNoComments;
   }
 
+  public boolean hasMoreTokens() {
+    return pointer < tokens.size() - 1;
+  }
+
 
 }
