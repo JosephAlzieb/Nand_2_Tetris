@@ -188,5 +188,41 @@ public class JackTokenizer {
     return pointer < tokens.size() - 1;
   }
 
+  public void advance() {
+    if (hasMoreTokens()) {
+      if (!bFirst) {
+        pointer++;
+      }
+      // if at position 0 of tokens, we do not want to increment yet
+      else if (bFirst) {
+        bFirst = false;
+      }
+      String currentItem = tokens.get(pointer);
+      // assign current token type and corresponding field variable (keyword, symbol, intval, stringval, or identifier)
+      // for this current token - position of where we are in the tokens array
+      if (keyWords.contains(currentItem)) {
+        mTokenType = "KEYWORD";
+        mKeyWord = currentItem;
+      } else if (symbols.contains(currentItem)) {
+        mSymbol = currentItem.charAt(0);
+        mTokenType = "SYMBOL";
+      } else if (Character.isDigit(currentItem.charAt(0))) {
+        mIntVal = Integer.parseInt(currentItem);
+        mTokenType = "INT_CONST";
+      } else if (currentItem.substring(0, 1).equals("\"")) {
+        mTokenType = "STRING_CONST";
+        mStringVal = currentItem.substring(1, currentItem.length() - 1);
+      } else if ((Character.isLetter(currentItem.charAt(0))) || (currentItem.charAt(0) == '_')) {
+        mTokenType = "IDENTIFIER";
+        mIdentifier = currentItem;
+      }
+    } else {
+      return;
+    }
+
+
+  }
+
+
 
 }
