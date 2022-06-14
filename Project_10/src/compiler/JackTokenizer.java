@@ -115,6 +115,47 @@ public class JackTokenizer {
 
   }
 
+  // list of keywords, symbols, and libraries for reference
+
+  static {
+    keyWords = new ArrayList<String>();
+    keyWords.add("class");
+    keyWords.add("constructor");
+    keyWords.add("function");
+    keyWords.add("method");
+    keyWords.add("field");
+    keyWords.add("static");
+    keyWords.add("var");
+    keyWords.add("int");
+    keyWords.add("char");
+    keyWords.add("boolean");
+    keyWords.add("void");
+    keyWords.add("true");
+    keyWords.add("false");
+    keyWords.add("null");
+    keyWords.add("this");
+    keyWords.add("do");
+    keyWords.add("if");
+    keyWords.add("else");
+    keyWords.add("while");
+    keyWords.add("return");
+    keyWords.add("let");
+    operations = "+-*/&|<>=";
+    symbols = "{}()[].,;+-*/&|<>=-~";
+    libraries = new ArrayList<String>();
+    libraries.add("Array");
+    libraries.add("Math");
+    libraries.add("String");
+    libraries.add("Array");
+    libraries.add("Output");
+    libraries.add("Screen");
+    libraries.add("Keyboard");
+    libraries.add("Memory");
+    libraries.add("Sys");
+    libraries.add("Square");
+    libraries.add("SquareGame");
+  }
+
   // test if the line argument has comments in it
   private boolean hasComments(String strLine) {
     boolean bHasComments = false;
