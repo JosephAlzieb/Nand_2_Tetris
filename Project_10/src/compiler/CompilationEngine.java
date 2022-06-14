@@ -190,5 +190,47 @@ public class CompilationEngine {
     }
   }
 
+  // compiles a var declaration
+  public void compileVarDec() {
+    jtoken.advance();
+    try {
+
+      if (jtoken.keyWord().equals("var") && (jtoken.tokenType().equals("KEYWORD"))) {
+        fw.write("<keyword> var </keyword>\n");
+        jtoken.advance();
+      }
+      // type of var, if identifier, e.g. Square or Array
+      if (jtoken.tokenType().equals("IDENTIFIER")) {
+        fw.write("<identifier> " + jtoken.identifier() + "</identifier>\n");
+        jtoken.advance();
+      }
+      // type of var, if keyword, e.g. int or boolean
+      else if (jtoken.tokenType().equals("KEYWORD")) {
+        fw.write("<keyword> " + jtoken.keyWord() + " </keyword>\n");
+        jtoken.advance();
+      }
+      // name of var
+      if (jtoken.tokenType().equals("IDENTIFIER")) {
+        fw.write("<identifier> " + jtoken.identifier() + "</identifier>\n");
+        jtoken.advance();
+      }
+      // if there are mutliple in 1 line
+      if ((jtoken.tokenType().equals("SYMBOL")) && (jtoken.symbol() == ',')) {
+        fw.write("<symbol> , </symbol>\n");
+        jtoken.advance();
+        fw.write(("<identifier> " + jtoken.identifier() + "</identifier>\n"));
+        jtoken.advance();
+      }
+      // end of var line
+      if ((jtoken.tokenType().equals("SYMBOL")) && (jtoken.symbol() == ';')) {
+        fw.write("<symbol> ; </symbol>\n");
+        jtoken.advance();
+
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+  }
 
 }
