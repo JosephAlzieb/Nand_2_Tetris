@@ -43,8 +43,8 @@ public class JackAnalyzer {
       String fileOutName = file.toString().substring(0, file.toString().length() - 5) + ".xml";
       File fileOutFile = new File(fileOutName);
       // compile the files
-//      CompilationEngine compilationEngine = new CompilationEngine(file, fileOutFile);
-//      compilationEngine.compileClass();
+      CompilationEngine compilationEngine = new CompilationEngine(file, fileOutFile);
+      compilationEngine.compileClass();
 
 
     }
