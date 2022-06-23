@@ -14,7 +14,7 @@ public class JackAnalyzer {
 
     File fileIn = new File(args[0]);
     File fileOut;
-    String fileNameOut = "";
+    String fileNameOut;
     ArrayList<File> files = new ArrayList<>();
     if (fileIn.isFile() && !(args[0].endsWith(".jack"))) {
       throw new IllegalArgumentException("incorrect file type.");
@@ -43,15 +43,17 @@ public class JackAnalyzer {
       String fileOutName = file.toString().substring(0, file.toString().length() - 5) + ".xml";
       File fileOutFile = new File(fileOutName);
       // compile the files
-//      CompilationEngine compilationEngine = new CompilationEngine(file, fileOutFile);
-//      compilationEngine.compileClass();
+      CompilationEngine compilationEngine = new CompilationEngine(file, fileOutFile);
+      compilationEngine.compileClass();
 
 
     }
 
 
     try {
-      fw.close();
+      if (fw != null) {
+        fw.close();
+      }
     } catch (IOException e) {
       e.printStackTrace();
     }
