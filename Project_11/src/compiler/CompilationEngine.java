@@ -9,13 +9,13 @@ public class CompilationEngine {
   private String strClassName = "";
   private String strSubRoutineName = "";
 
-  private int nLabelIndex;
+  private int labelIndex;
 
   public CompilationEngine(File inFile, File outFile) {
     jtoken = new JackTokenizer(inFile);
     symboltable = new SymbolTable();
     vmWriter = new VMWriter(outFile);
-    nLabelIndex = 0;
+    labelIndex = 0;
   }
 
   // compiles a complete class
@@ -77,7 +77,7 @@ public class CompilationEngine {
 
   }
 
-  // compiles a complete method, function, or a constructor
+    // compiles a complete method, function, or a constructor
   public void compileSubRoutine() {
     jtoken.advance();
     // once reach the end, return  - no more subroutines - base case for the recursive call
@@ -357,8 +357,8 @@ public class CompilationEngine {
 
   // compiles a while statement
   public void compileWhile() {
-    String secondLabel = "LABEL_" + nLabelIndex++;
-    String firstLabel = "LABEL_" + nLabelIndex++;
+    String secondLabel = "LABEL_" + labelIndex++;
+    String firstLabel = "LABEL_" + labelIndex++;
     vmWriter.writeLabel(firstLabel);
     // while
     jtoken.advance();
@@ -398,8 +398,8 @@ public class CompilationEngine {
 
   // compiles an if statement, possibly with a trailing else clause
   public void compileIf() {
-    String strLabelElse = "LABEL_" + nLabelIndex++;
-    String strLabelEnd = "LABEL_" + nLabelIndex++;
+    String strLabelElse = "LABEL_" + labelIndex++;
+    String strLabelEnd = "LABEL_" + labelIndex++;
     jtoken.advance();
     // expression within if () condition
     compileExpression();

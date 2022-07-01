@@ -29,7 +29,7 @@ public class JackAnalyzer {
       }
     }
 
-    fileNameOut = fileNameOut + ".xml";
+    fileNameOut = fileNameOut + ".vm";
     fileOut = new File(fileNameOut);
 
     FileWriter fw = null;
@@ -40,7 +40,7 @@ public class JackAnalyzer {
     }
 
     for (File file : files) {
-      String fileOutName = file.toString().substring(0, file.toString().length() - 5) + ".xml";
+      String fileOutName = file.toString().substring(0, file.toString().length() - 5) + ".vm";
       File fileOutFile = new File(fileOutName);
       // compile the files
       CompilationEngine compilationEngine = new CompilationEngine(file, fileOutFile);
